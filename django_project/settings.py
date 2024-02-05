@@ -25,12 +25,13 @@ SECRET_KEY = 'django-insecure-z5*1%!9lze1hu9@asi5b&ecw*pz0_n*kc(r=n^g@m^w1)byj4^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+     "daphne",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,7 +47,8 @@ INSTALLED_APPS = [
     'dj_rest_auth',
     'dj_rest_auth.registration',
     'accounts',
-    'posts',
+    'posters',
+    'forum',
 ]
 
 MIDDLEWARE = [
@@ -61,6 +63,15 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'django_project.urls'
+ASGI_APPLICATION = "django_project.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 TEMPLATES = [
     {
@@ -138,7 +149,7 @@ AUTH_USER_MODEL = 'accounts.customuser'
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
+        'rest_framework.permissions.AllowAny'
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         'rest_framework.authentication.SessionAuthentication',
@@ -148,3 +159,4 @@ REST_FRAMEWORK = {
 }
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 SITE_ID = 1
+#CSRF_USE_SESSIONS = 
